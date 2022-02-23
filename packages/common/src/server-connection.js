@@ -54,7 +54,9 @@ export const Provider = ({ Pusher, pusherKey, debug = false, children }) => {
       },
     });
 
-    const channel = pusher.subscribe(`private-${user.id}`);
+    const nonce = crypto.getRandomValues(new Uint32Array(1))[0];
+    const channelName = `private-${user.id}-${nonce}`;
+    const channel = pusher.subscribe(channelName);
     channelRef.current = channel;
 
     const serverEvents = Object.keys(serverEventMap);
